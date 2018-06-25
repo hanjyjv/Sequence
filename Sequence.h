@@ -11,7 +11,7 @@ public:
     ~Sequence();
     int length();
     int numberOf(char);
-    stirng longestConseccutive();
+    string longestConsecutive();
     string longestRepeated();
 
 private:

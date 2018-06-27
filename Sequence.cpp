@@ -1,9 +1,16 @@
 #include<iostream>
 #include<fstream>
+#include<vector>
+#include<algorithm>
+#include<stdlib.h>
 #include<string>
 #include<cstring>
 #include"Sequence.h"
 using namespace std;
+
+int pstrcmp(const void *, const void *);
+
+int common_len(char *,char*);
 
 Sequence::Sequence(string filename)
 {
@@ -99,7 +106,51 @@ string Sequence::longestConsecutive()
     cout<<s3<<endl;
 }
 
+char a[2000000];
+char *post[2000000];
 string Sequence::longestRepeated()
 {
-    
+    int j;
+    int temp;
+    int max=0,max_index=0;
+    for(int m=0;m<n;m++)
+    {
+        a[m]=s2[m];
+        post[m]=&a[m];
+    }
+
+    qsort(post,n,sizeof(char *),pstrcmp);
+    for(j=0;j<n-1;j++)
+    {
+        temp = common_len(post[j],post[j+1]);
+        if(max<temp)
+        {
+            max=temp;
+            max_index=j;
+        }
+    }
+    string s5;
+    for(int m=0;m<max;m++)
+    {
+        s5+=(*post[max_index]);
+        post[max_index]++;
+    }
+    return s5;
+
+}
+
+int pstrcmp(const void *p1,const void *p2)
+{
+    return strcmp(*(char**)p1, *(char**)p2);
+}
+
+int common_len(char *p,char *q)
+{
+    int k=0;
+    while(p!=NULL&&q!=NULL&&(*p == *q))
+    {   p++;
+        q++;
+        k++;
+    }
+    return k;
 }

@@ -16,11 +16,13 @@ Sequence::Sequence(string filename)
 {
     ifstream inf;
     inf.open(filename.data());
+
     while(!inf.eof())
     {
         getline(inf,s);
         s2+=s;
     }
+
     inf.close();
 }
 
@@ -31,8 +33,7 @@ Sequence::~Sequence()
 int Sequence::length()
 {
     n=s2.length();
-    cout<<"length:"<<endl;
-    cout<<n<<endl;
+    return n;
 } 
 
 int Sequence::numberOf(char base)
@@ -65,13 +66,13 @@ int Sequence::numberOf(char base)
     }
     
     if(base=='A')
-        cout<<"A: "<<acount<<endl;
+        return acount;
     if(base=='T')
-        cout<<"T: "<<tcount<<endl;
+        return tcount;
     if(base=='C')
-        cout<<"C: "<<ccount<<endl;
+        return ccount;
     if(base=='G')
-        cout<<"G: "<<gcount<<endl;
+        return gcount;
 
 }
 
@@ -80,6 +81,7 @@ string Sequence::longestConsecutive()
     int now=0;
     int max=-1;
     string s3;
+    string s4;
 
     for(int i=0;i<n;i++)
     {
@@ -101,18 +103,21 @@ string Sequence::longestConsecutive()
         }
     }
     
-    for(int i=0;i<max-1;i++)
-        cout<<s3;
-    cout<<s3<<endl;
+    for(int i=0;i<max;i++)
+        s4=s4+s3;
+
+    return s4;
 }
 
 char a[2000000];
 char *post[2000000];
+
 string Sequence::longestRepeated()
 {
     int j;
     int temp;
     int max=0,max_index=0;
+
     for(int m=0;m<n;m++)
     {
         a[m]=s2[m];
@@ -120,21 +125,26 @@ string Sequence::longestRepeated()
     }
 
     qsort(post,n,sizeof(char *),pstrcmp);
+
     for(j=0;j<n-1;j++)
     {
         temp = common_len(post[j],post[j+1]);
+
         if(max<temp)
         {
             max=temp;
             max_index=j;
         }
     }
+
     string s5;
+
     for(int m=0;m<max;m++)
     {
         s5+=(*post[max_index]);
         post[max_index]++;
     }
+
     return s5;
 
 }
@@ -147,10 +157,12 @@ int pstrcmp(const void *p1,const void *p2)
 int common_len(char *p,char *q)
 {
     int k=0;
+
     while(p!=NULL&&q!=NULL&&(*p == *q))
     {   p++;
         q++;
         k++;
     }
+
     return k;
 }
